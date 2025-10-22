@@ -5,6 +5,7 @@
   "tags": ["go", "java", "python"],
   "owner": {
     "username": "rbrown2atlassian",
-    "email": "rbrown@example.com"
+    "email": "rbrown@example.com",
+    "gender": "female"
   }
 }
