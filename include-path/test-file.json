@@ -1,0 +1,10 @@
+{
+  "name": "Test Project",
+  "version": 1,
+  "active": true,
+  "tags": ["go", "java", "python"],
+  "owner": {
+    "username": "rbrown2atlassian",
+    "email": "rbrown@example.com"
+  }
+}
