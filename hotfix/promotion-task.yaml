@@ -1,0 +1,58 @@
+
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: promote
+  namespace: homa-hotfix
+spec:
+  vars:
+    - name: homaRepo
+      value: "https://github.com/nghazali/test-kargo-freights.git"
+    - name: sourcePath
+      value: ./src
+    - name: targetPath
+      value: ./out
+    - name: stageBranch
+      value: kargo-pilot
+    - name: resourceSourcePath
+      value: ${{ vars.sourcePath }}/include-path
+    - name: resourceTargetPath
+      value: ${{ vars.targetPath }}/include-path
+  steps:
+    # Step: Clone the repository and checkout the target branch for pilot stage
+    - uses: git-clone
+      as: fetch-repo
+      config:
+        repoURL: ${{ vars.homaRepo }}
+        checkout:
+          - commit: ${{ commitFrom(vars.homaRepo).ID }}
+            path: ${{ vars.sourcePath }}
+          - branch: ${{ vars.stageBranch }}
+            create: true
+            path: ${{ vars.targetPath }}
+    # Step: Clear the output directory
+    - uses: git-clear
+      as: cleanup
+      config:
+        path: ${{ vars.targetPath }}
+    # Step: Copy the application manifests for the pilot stage
+    - uses: copy
+      as: copy-manifest
+      config:
+        inPath: ${{ vars.resourceSourcePath }}
+        outPath: ${{ vars.resourceTargetPath }}
+        # Step: Commit the changes to the repository
+    - uses: git-commit
+      as: commit-repo
+      config:
+        author:
+          email: nghazali@gmail.com
+          name: Nasser Ghazali
+        message: "chore: promote to pilot"
+        path: ${{ vars.targetPath }}
+    # Step: Push the changes to the repository
+    - uses: git-push
+      as: publish-manifests
+      config:
+        path: ${{ vars.resourceTargetPath }}
+        targetBranch: ${{ vars.stageBranch }}

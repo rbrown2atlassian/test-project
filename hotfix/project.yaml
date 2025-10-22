@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: homa-hotfix
+  labels:
+    kargo.akuity.io/project: "true"
+    image-pull-credentials-injection: enabled
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
+  name: homa-hotfix
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ProjectConfig
+metadata:
+  name: homa-hotfix
+  namespace: homa-hotfix
+spec:
+  webhookReceivers:
+    - name: gh-wh-receiver
+      github:
+        secretRef:
+          name: gh-wh-secret

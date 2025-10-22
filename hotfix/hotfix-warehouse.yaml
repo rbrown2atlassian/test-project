@@ -1,0 +1,17 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: resources-hotfix
+  namespace: homa-hotfix
+spec:
+  freightCreationPolicy: Automatic
+  interval: 1m0s
+  subscriptions:
+    - git:
+        branch: hotfix
+        commitSelectionStrategy: NewestFromBranch
+        discoveryLimit: 10
+        includePaths:
+          - include-path
+        repoURL: https://github.com/nghazali/test-kargo-freights
+        strictSemvers: true

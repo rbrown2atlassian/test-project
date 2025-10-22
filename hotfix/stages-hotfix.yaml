@@ -1,0 +1,22 @@
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  annotations:
+    kargo.akuity.io/color: red
+  finalizers:
+    - kargo.akuity.io/finalizer
+  name: pilot
+  namespace: homa-hotfix
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: resources-hotfix
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promote

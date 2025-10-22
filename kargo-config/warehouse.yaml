@@ -1,0 +1,17 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: resources-repo
+  namespace: test-project
+spec:
+  freightCreationPolicy: Automatic
+  interval: 1m0s
+  subscriptions:
+    - git:
+        branch: main
+        commitSelectionStrategy: NewestFromBranch
+        discoveryLimit: 10
+        repoURL: https://github.com/nghazali/test-kargo-freights
+        strictSemvers: true
+        includePaths:
+          - include-path
